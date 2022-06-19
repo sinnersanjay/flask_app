@@ -1,0 +1,38 @@
+
+
+Python code:
+-----------------------------------------
+from flask import Flask #Import Flask in Python
+app = Flask(__name__) #App to host the application
+
+@app.route('/') #Route to call the python function
+def hello_world():
+    return 'Hello World!'
+
+if __name__ == "__main__": #Host the application
+    app.run(host='0.0.0.0')
+---------------------------------------------
+
+Dockerfile:
+
+# syntax=docker/dockerfile:1
+
+FROM python:3.8-slim-buster
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+
+
+#command used to build docker image - docker build -t flask_ap .
+-----------------------------------------------------
+
+Procfile:
+web: gunicorn app:app 
+#For deploying the app on Heroku needed this specific file and had install gunicorn
+
